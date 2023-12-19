@@ -2,16 +2,10 @@ import React, {
   useState,
 } from 'react';
 
-import TodoInput from './input/index';
-import TodoItem from './item/index';
+import TodoInput from './input';
+import TodoItem from './item';
 
 import './index.scss';
-
-interface TodoData {
-  id: number,
-  text: string,
-  done: boolean,
-}
 
 function Todo() {
   // todo ids
@@ -29,7 +23,6 @@ function Todo() {
 
   // add todo
   const addTodo = (text) => {
-    console.log(text);
     // use timestamp as id
     const newId = Date.now();
 
@@ -50,7 +43,15 @@ function Todo() {
   // update todo
   const updateTodo = (todo) => {
     console.log(todo);
-    // TODO update todo
+
+    const {
+      id,
+    } = todo;
+
+    setData((oldValue) => ({
+      ...oldValue,
+      [id]: todo,
+    }));
   };
 
   return (
@@ -70,7 +71,3 @@ function Todo() {
 }
 
 export default Todo;
-
-export {
-  TodoData,
-};

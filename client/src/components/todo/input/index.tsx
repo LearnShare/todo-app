@@ -15,6 +15,7 @@ function TodoInput(
     text,
     setText,
   ] = useState('');
+
   // input onKeyDown event
   const inputOnKeyDown = (event) => {
     // submit on Enter
