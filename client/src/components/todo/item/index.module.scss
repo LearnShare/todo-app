@@ -1,0 +1,40 @@
+.item {
+  position: relative;
+  border: solid 0 transparent;
+  border-width: 1px 0;
+  font-size: 0;
+  &:has(input[type="text"]:focus) {
+    border-color: rgba(0, 0, 0, .15);
+  }
+
+  & > span {
+    position: absolute;
+    left: 0;
+    top: 6px;
+    box-sizing: border-box;
+
+    svg {
+      fill: rgba(0, 0, 0, .4);
+    }
+  }
+
+  & > input {
+    box-sizing: border-box;
+    border: none;
+    padding: 6px 36px 6px 30px;
+    width: 100%;
+    font-size: 16px;
+    line-height: 1.5;
+    &:focus {
+      outline: none;
+    }
+    &:read-only {
+      cursor: default;
+    }
+  }
+}
+
+.done > input {
+  text-decoration: line-through;
+  color: rgba(0, 0, 0, .4);
+}

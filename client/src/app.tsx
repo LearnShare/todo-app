@@ -4,6 +4,8 @@ import {
   Todo,
 } from '@/components';
 
+import '@/css/base.scss';
+
 function App() {
   return (
     <div className="app">

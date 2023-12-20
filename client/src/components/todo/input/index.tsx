@@ -2,6 +2,12 @@ import React, {
   useState,
 } from 'react';
 
+import {
+  Icon,
+} from '@/components';
+
+import styles from './index.module.scss';
+
 interface TodoInputProps {
   onSubmit: (text: string) => void,
 }
@@ -28,11 +34,16 @@ function TodoInput(
   };
 
   return (
-    <input
-        type="text"
-        value={ text }
-        onChange={ (event) => setText(event.target.value) }
-        onKeyDown={ (event) => inputOnKeyDown(event) } />
+    <div
+        className={ styles.input }>
+      <Icon name="add" />
+      <input
+          type="text"
+          placeholder='Add one'
+          value={ text }
+          onChange={ (event) => setText(event.target.value) }
+          onKeyDown={ (event) => inputOnKeyDown(event) } />
+    </div>
   );
 }
 

@@ -35,5 +35,11 @@ module.exports = {
         "when": "always",
       },
     ],
+    'template-curly-spacing': [
+      2,
+      {
+        "when": "always",
+      },
+    ],
   },
 }

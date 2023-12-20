@@ -2,10 +2,17 @@ import React, {
   useState,
   useRef,
 } from 'react';
+import clsx from 'clsx';
 
 import {
   TodoData,
 } from '@/types';
+
+import {
+  Icon,
+} from '@/components';
+
+import styles from './index.module.scss';
 
 interface TodoItemProps {
   data: TodoData,
@@ -27,7 +34,7 @@ function TodoItem(
     setDone,
   ] = useState(data.done);
 
-  const textInput: HTMLInputElement = useRef(null);
+  const textInput = useRef(null);
 
   // call onChange when updated
   const todoOnChange = (changed) => {
@@ -57,25 +64,35 @@ function TodoItem(
     }
   };
 
-  // checkbox onChange event
-  const checkboxOnChange = (checked) => {
-    setDone(checked);
+  // toggle done
+  const toggleDone = () => {
+    setDone((oldValue) => {
+      todoOnChange({
+        done: !oldValue,
+      });
 
-    todoOnChange({
-      done: checked,
+      return !oldValue;
     });
   };
 
   return (
-    <div className="todo-item">
-      <input
-          type="checkbox"
-          checked={ done }
-          onChange={ (event) => checkboxOnChange(event.target.checked) } />
+    <div
+        className={ clsx(
+          styles.item,
+          done && styles.done,
+        ) }>
+      <Icon
+          name={
+            done
+              ? 'checkbox-checked'
+              : 'checkbox'
+          }
+          onClick={ toggleDone } />
       <input
           ref={ textInput }
           type="text"
           value={ text }
+          readOnly={ done }
           onChange={ (event) => setText(event.target.value) }
           onKeyDown={ (event) => inputOnKeyDown(event) }
           onBlur={ () => todoOnChange() } />

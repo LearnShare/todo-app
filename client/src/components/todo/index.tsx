@@ -2,10 +2,14 @@ import React, {
   useState,
 } from 'react';
 
-import TodoInput from './input';
 import TodoItem from './item';
+import TodoInput from './input';
 
-import './index.scss';
+import {
+  TodoData,
+} from '@/types';
+
+import styles from './index.module.scss';
 
 function Todo() {
   // todo ids
@@ -22,13 +26,13 @@ function Todo() {
   }[]>({});
 
   // add todo
-  const addTodo = (text) => {
+  const addTodo = (text: string) => {
     // use timestamp as id
     const newId = Date.now();
 
     setIds((oldValue) => ([
-      newId,
       ...oldValue,
+      newId,
     ]));
     setData((oldValue) => ({
       ...oldValue,
@@ -41,9 +45,7 @@ function Todo() {
   };
 
   // update todo
-  const updateTodo = (todo) => {
-    console.log(todo);
-
+  const updateTodo = (todo: TodoData) => {
     const {
       id,
     } = todo;
@@ -55,9 +57,9 @@ function Todo() {
   };
 
   return (
-    <div className="todo">
-      <TodoInput
-          onSubmit={ (text) => addTodo(text) } />
+    <div
+        className={ styles.todo }>
+      <h2>TODO</h2>
       {
         ids.map((id) => (
           <TodoItem
@@ -66,6 +68,8 @@ function Todo() {
               onChange={ (todo) => updateTodo(todo) } />
         ))
       }
+      <TodoInput
+          onSubmit={ (text) => addTodo(text) } />
     </div>
   );
 }
