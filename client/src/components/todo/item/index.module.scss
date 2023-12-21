@@ -5,23 +5,16 @@
   font-size: 0;
   &:has(input[type="text"]:focus) {
     border-color: rgba(0, 0, 0, .15);
-  }
 
-  & > span {
-    position: absolute;
-    left: 0;
-    top: 6px;
-    box-sizing: border-box;
-
-    svg {
-      fill: rgba(0, 0, 0, .4);
+    & > .delete {
+      display: block;
     }
   }
 
   & > input {
     box-sizing: border-box;
     border: none;
-    padding: 6px 36px 6px 30px;
+    padding: 6px 30px;
     width: 100%;
     font-size: 16px;
     line-height: 1.5;
@@ -32,9 +25,39 @@
       cursor: default;
     }
   }
+
+  & > .delete {
+    display: none;
+  }
+  &:hover > .delete {
+    display: block;
+  }
 }
 
 .done > input {
   text-decoration: line-through;
   color: rgba(0, 0, 0, .4);
+}
+
+
+.checkbox {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  cursor: pointer;
+
+  svg {
+    fill: rgba(0, 0, 0, .4);
+  }
+}
+
+.delete {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  cursor: pointer;
+
+  svg {
+    fill: rgba(0, 0, 0, .4);
+  }
 }

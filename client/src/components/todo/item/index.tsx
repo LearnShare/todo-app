@@ -16,13 +16,15 @@ import styles from './index.module.scss';
 
 interface TodoItemProps {
   data: TodoData,
-  onChange: (todo: TodoData) => void,
+  onChange?: (todo: TodoData) => void,
+  onDelete?: () => void,
 }
 
 function TodoItem(
   {
     data,
     onChange,
+    onDelete,
   }: TodoItemProps,
 ) {
   const [
@@ -87,7 +89,8 @@ function TodoItem(
               ? 'checkbox-checked'
               : 'checkbox'
           }
-          onClick={ toggleDone } />
+          className={ clsx(styles.checkbox, 'checkbox') }
+          onClick={ () => toggleDone() } />
       <input
           ref={ textInput }
           type="text"
@@ -96,6 +99,10 @@ function TodoItem(
           onChange={ (event) => setText(event.target.value) }
           onKeyDown={ (event) => inputOnKeyDown(event) }
           onBlur={ () => todoOnChange() } />
+      <Icon
+          name="close"
+          className={ clsx(styles.delete, 'delete') }
+          onClick={ () => onDelete() } />
     </div>
   );
 }

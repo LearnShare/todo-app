@@ -34,6 +34,7 @@ function Todo() {
       ...oldValue,
       newId,
     ]));
+
     setData((oldValue) => ({
       ...oldValue,
       [newId]: {
@@ -56,6 +57,34 @@ function Todo() {
     }));
   };
 
+  // delete todo
+  const deleteTodo = (id: number) => {
+    const index = ids.indexOf(id);
+
+    if (index < 0) {
+      throw new Error(`Item [${ id }] not exists`);
+      return;
+    }
+
+    setIds((oldValue) => {
+      const list = [
+        ...oldValue,
+      ];
+      list.splice(index, 1);
+
+      return list;
+    });
+
+    setData((oldValue) => {
+      const idData = {
+        ...oldValue,
+      };
+      delete idData[id];
+
+      return idData;
+    });
+  };
+
   return (
     <div
         className={ styles.todo }>
@@ -65,7 +94,8 @@ function Todo() {
           <TodoItem
               key={ id }
               data={ data[id] }
-              onChange={ (todo) => updateTodo(todo) } />
+              onChange={ (todo) => updateTodo(todo) }
+              onDelete={ () => deleteTodo(id) } />
         ))
       }
       <TodoInput
