@@ -16,7 +16,7 @@ function Icon(
     name,
     className,
     onClick,
-  }: IconProps
+  }: IconProps,
 ) {
   return (
     <span
@@ -35,5 +35,10 @@ function Icon(
     </span>
   );
 }
+
+Icon.defaultProps = {
+  className: '',
+  onClick: () => {},
+};
 
 export default Icon;

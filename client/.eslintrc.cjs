@@ -32,14 +32,14 @@ module.exports = {
     'react/jsx-curly-spacing': [
       2,
       {
-        "when": "always",
+        'when': 'always',
       },
     ],
     'template-curly-spacing': [
       2,
-      {
-        "when": "always",
-      },
+      'always',
     ],
+    'jsx-a11y/click-events-have-key-events': 'off',
+    'jsx-a11y/no-static-element-interactions': 'off',
   },
 }

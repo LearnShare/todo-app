@@ -39,7 +39,7 @@ function TodoInput(
       <Icon name="add" />
       <input
           type="text"
-          placeholder='Add one'
+          placeholder="Add one"
           value={ text }
           onChange={ (event) => setText(event.target.value) }
           onKeyDown={ (event) => inputOnKeyDown(event) } />

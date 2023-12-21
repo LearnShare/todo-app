@@ -107,4 +107,9 @@ function TodoItem(
   );
 }
 
+TodoItem.defaultProps = {
+  onChange: () => {},
+  onDelete: () => {},
+};
+
 export default TodoItem;
