@@ -27,16 +27,16 @@ module.exports = {
   rules: {
     'import/extensions': 'off',
     'import/prefer-default-export': 'off',
-    'react/jsx-closing-bracket-location': [1, 'after-props'],
-    'react/jsx-indent-props': [2, 4],
+    'react/jsx-closing-bracket-location': ['error', 'after-props'],
+    'react/jsx-indent-props': ['error', 4],
     'react/jsx-curly-spacing': [
-      2,
+      'error',
       {
         'when': 'always',
       },
     ],
     'template-curly-spacing': [
-      2,
+      'error',
       'always',
     ],
     'jsx-a11y/click-events-have-key-events': 'off',
