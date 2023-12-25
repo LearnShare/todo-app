@@ -7,12 +7,12 @@ const db = prisma.todo;
 
 // get todos
 function list({
-  size,
-  page,
+  // size,
+  // page,
 }) {
   return db.findMany({
-    skip: size * (page - 1),
-    take: size,
+    // skip: size * (page - 1),
+    // take: size,
   });
 }
 
@@ -38,8 +38,36 @@ function create({
   });
 }
 
+// udpate todo
+function update({
+  id,
+  text,
+}) {
+  return db.update({
+    data: {
+      text,
+    },
+    where: {
+      id,
+    },
+  });
+}
+
+// delete todo
+function del({
+  id,
+}) {
+  return db.delete({
+    where: {
+      id,
+    },
+  });
+}
+
 export default {
   list,
   get,
   create,
+  update,
+  del,
 };
