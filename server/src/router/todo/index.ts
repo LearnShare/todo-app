@@ -27,12 +27,12 @@ todoRouter.get(`/:id`, async (req: Request, res: Response) => {
     id: Number(id),
   });
 
-  if (todo) {
+  if (!todo) {
+    res.status(404)
+        .end();
+  } else {
     res.json(todo);
   }
-
-  res.status(404)
-    .end();
 });
 
 // create todo
@@ -55,25 +55,52 @@ todoRouter.put(`/:id`, async (req: Request, res: Response) => {
   } = req.params;
   const {
     text,
+    done,
   } = req.body;
-  const todo = await DB.todo.update({
+
+  const target = await DB.todo.get({
     id: Number(id),
-    text,
   });
 
-  res.json(todo);
+  if (!text
+      || done === undefined) {
+    res.status(400)
+        .end('Invalid todo data');
+  } else if (!target) {
+    res.status(404)
+        .end('Todo not exist');
+  } else {
+    const todo = await DB.todo.update({
+      id: Number(id),
+      text,
+      done: Boolean(done),
+    });
+
+    res.json(todo);
+  }
 });
 
 // delete todo
 todoRouter.delete(`/:id`, async (req: Request, res: Response) => {
+  // TODO check is Todo[id] exists
   const {
     id,
   } = req.params;
-  await DB.todo.del({
+
+  const target = await DB.todo.get({
     id: Number(id),
   });
 
-  res.end();
+  if (!target) {
+    res.status(404)
+        .end('Todo not exist');
+  } else {
+    await DB.todo.remove({
+      id: Number(id),
+    });
+
+    res.end();
+  }
 });
 
 export default todoRouter;

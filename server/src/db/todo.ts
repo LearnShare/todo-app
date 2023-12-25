@@ -42,10 +42,12 @@ function create({
 function update({
   id,
   text,
+  done,
 }) {
   return db.update({
     data: {
       text,
+      done,
     },
     where: {
       id,
@@ -54,7 +56,7 @@ function update({
 }
 
 // delete todo
-function del({
+function remove({
   id,
 }) {
   return db.delete({
@@ -69,5 +71,5 @@ export default {
   get,
   create,
   update,
-  del,
+  remove,
 };
