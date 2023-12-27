@@ -1,8 +1,5 @@
-import {
-  PrismaClient,
-} from '@prisma/client';
+import prisma from "./prisma";
 
-const prisma = new PrismaClient();
 const db = prisma.todo;
 
 // get todos
@@ -44,13 +41,14 @@ function update({
   text,
   done,
 }) {
+  // FIXME ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.), transient: false })
   return db.update({
+    where: {
+      id,
+    },
     data: {
       text,
       done,
-    },
-    where: {
-      id,
     },
   });
 }

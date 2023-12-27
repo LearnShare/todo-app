@@ -8,7 +8,7 @@ import todoRouter from './todo'
 
 const router = Router();
 
-router.use('/todo', todoRouter);
+router.use('/api/todo', todoRouter);
 
 router.all('*', (req: Request, res: Response) => {
   res.status(404)

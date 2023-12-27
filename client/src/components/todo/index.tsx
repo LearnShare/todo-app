@@ -1,6 +1,9 @@
 import React, {
   useState,
+  useEffect,
 } from 'react';
+
+import TodoAPI from '@/api/todo';
 
 import TodoItem from './item';
 import TodoInput from './input';
@@ -12,6 +15,16 @@ import {
 import styles from './index.module.scss';
 
 function Todo() {
+  // request status
+  const [
+    loading,
+    setLoading,
+  ] = useState(false);
+  // const [
+  //   saving,
+  //   setSaving,
+  // ] = useState(false);
+
   // todo ids
   const [
     ids,
@@ -25,36 +38,73 @@ function Todo() {
     [number]: TodoData,
   }[]>({});
 
+  // get todo list
+  const getList = () => {
+    if (loading) {
+      return;
+    }
+
+    setLoading(true);
+
+    TodoAPI.list()
+      .then((res) => {
+        const idList = [];
+        const todoData = {};
+
+        for (const item of res.data) {
+          idList.push(item.id);
+          todoData[item.id] = item;
+        }
+
+        setIds(idList);
+        setData(todoData);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  useEffect(() => {
+    getList();
+  }, []);
+
   // add todo
   const addTodo = (text: string) => {
-    // use timestamp as id
-    const newId = Date.now();
+    TodoAPI.add(text)
+      .then((res) => {
+        const newItem = res.data;
 
-    setIds((oldValue) => ([
-      ...oldValue,
-      newId,
-    ]));
+        setIds((oldValue) => ([
+          ...oldValue,
+          newItem.id,
+        ]));
 
-    setData((oldValue) => ({
-      ...oldValue,
-      [newId]: {
-        id: newId,
-        text,
-        done: false,
-      },
-    }));
+        setData((oldValue) => ({
+          ...oldValue,
+          [newItem.id]: newItem,
+        }));
+      });
   };
 
   // update todo
-  const updateTodo = (todo: TodoData) => {
+  const updateTodo = (item: TodoData) => {
     const {
       id,
-    } = todo;
+      text,
+      done,
+    } = item;
 
-    setData((oldValue) => ({
-      ...oldValue,
-      [id]: todo,
-    }));
+    TodoAPI.update(id, {
+      text,
+      done,
+    })
+      .then((res) => {
+        const updatedItem = res.data;
+
+        setData((oldValue) => ({
+          ...oldValue,
+          [id]: updatedItem,
+        }));
+      });
   };
 
   // delete todo
@@ -66,23 +116,26 @@ function Todo() {
       return;
     }
 
-    setIds((oldValue) => {
-      const list = [
-        ...oldValue,
-      ];
-      list.splice(index, 1);
+    TodoAPI.del(id)
+      .then(() => {
+        setIds((oldValue) => {
+          const list = [
+            ...oldValue,
+          ];
+          list.splice(index, 1);
 
-      return list;
-    });
+          return list;
+        });
 
-    setData((oldValue) => {
-      const idData = {
-        ...oldValue,
-      };
-      delete idData[id];
+        setData((oldValue) => {
+          const idData = {
+            ...oldValue,
+          };
+          delete idData[id];
 
-      return idData;
-    });
+          return idData;
+        });
+      });
   };
 
   return (

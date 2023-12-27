@@ -39,6 +39,7 @@ function TodoItem(
   const textInput = useRef(null);
 
   // call onChange when updated
+  // TODO skip if not changed
   const todoOnChange = (changed) => {
     const {
       id,

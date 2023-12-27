@@ -18,4 +18,9 @@ export default defineConfig({
       '@': resolve('./src'),
     },
   },
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
+  },
 });
