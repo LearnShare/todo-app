@@ -41,7 +41,6 @@ function update({
   text,
   done,
 }) {
-  // FIXME ConnectorError(ConnectorError { user_facing_error: None, kind: ConnectionError(Timed out during query execution.), transient: false })
   return db.update({
     where: {
       id,
