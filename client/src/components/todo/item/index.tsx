@@ -103,6 +103,7 @@ function TodoItem(
           type="text"
           value={ text }
           readOnly={ done }
+          tabIndex={ done ? -1 : 0 }
           onChange={ (event) => setText(event.target.value) }
           onKeyDown={ (event) => inputOnKeyDown(event) }
           onBlur={ (event) => todoOnChange({
