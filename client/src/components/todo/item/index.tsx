@@ -39,25 +39,31 @@ function TodoItem(
   const textInput = useRef(null);
 
   // call onChange when updated
-  // TODO skip if not changed
   const todoOnChange = (changed) => {
     const {
       id,
     } = data;
 
-    onChange({
-      id,
-      text,
-      done,
-      ...changed,
-    });
+    if ((changed.text !== undefined
+      && changed.text !== data.text)
+        || (changed.done !== undefined
+          && changed.done !== data.done)) {
+      onChange({
+        id,
+        text,
+        done,
+        ...changed,
+      });
+    }
   };
 
   // input onKeyDown event
   const inputOnKeyDown = (event: KeyboardEvent) => {
     // submit on Enter
     if (event.key === 'Enter') {
-      todoOnChange();
+      todoOnChange({
+        text: event.target.value,
+      });
 
       if (textInput
           && textInput.current) {
@@ -99,7 +105,9 @@ function TodoItem(
           readOnly={ done }
           onChange={ (event) => setText(event.target.value) }
           onKeyDown={ (event) => inputOnKeyDown(event) }
-          onBlur={ () => todoOnChange() } />
+          onBlur={ (event) => todoOnChange({
+            text: event.target.value,
+          }) } />
       <Icon
           name="close"
           className={ clsx(styles.delete, 'delete') }
