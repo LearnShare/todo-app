@@ -1,6 +1,16 @@
 @import "./variables.scss";
 
 body {
+  color-scheme: light;
+
   margin: 0;
   font-family: var(--font-ui);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    color-scheme: dark;
+  }
 }

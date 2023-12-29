@@ -6,6 +6,22 @@
   --font-mono: "Monaco", "SF Mono", "Source Code Pro", "Consolas", monospace;
 
   // colors
+  --color-bg: #FFF;
+  --color-text: #222;
+  --color-text-second: rgba(0, 0, 0, .4);
+
+  --color-todo-border: rgba(0, 0, 0, .15);
 
   // sizes
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    // colors
+    --color-bg: #333;
+    --color-text: #F5F5F5;
+    --color-text-second: rgba(255, 255, 255, .3);
+
+    --color-todo-border: rgba(255, 255, 255, .15);
+  }
 }

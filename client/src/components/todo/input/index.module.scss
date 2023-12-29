@@ -1,10 +1,12 @@
+@import '@/css/variables.scss';
+
 .input {
   position: relative;
   border: solid 0 transparent;
   border-width: 1px 0;
   font-size: 0;
   &:has(input[type="text"]:focus) {
-    border-color: rgba(0, 0, 0, .15);
+    border-color: var(--color-todo-border);
   }
 
   & > span {
@@ -14,7 +16,7 @@
     box-sizing: border-box;
 
     svg {
-      fill: rgba(0, 0, 0, .4);
+      fill: var(--color-text-second);
     }
   }
 
@@ -25,12 +27,13 @@
     width: 100%;
     font-size: 16px;
     line-height: 1.5;
+    background-color: transparent;
     &:focus {
       outline: none;
     }
 
     &::placeholder {
-      color: rgba(0, 0, 0, .4);
+      color: var(--color-text-second);
     }
   }
 }
