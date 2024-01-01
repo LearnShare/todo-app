@@ -4,10 +4,12 @@ import {
   Response,
 } from 'express';
 
-import todoRouter from './todo'
+import listRouter from './list';
+import todoRouter from './todo';
 
 const router = Router();
 
+router.use('/api/list', listRouter);
 router.use('/api/todo', todoRouter);
 
 router.all('*', (req: Request, res: Response) => {

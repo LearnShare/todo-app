@@ -10,9 +10,18 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Todo {
+model List {
   id    Int      @id @default(autoincrement())
-  text  String
-  done  Boolean  @default(false)
+  name  String
   ctime DateTime @default(now())
+  todo  Todo[]
+}
+
+model Todo {
+  id     Int      @id @default(autoincrement())
+  text   String
+  done   Boolean  @default(false)
+  ctime  DateTime @default(now())
+  list   List     @relation(fields: [listId], references: [id])
+  listId Int      @default(0)
 }

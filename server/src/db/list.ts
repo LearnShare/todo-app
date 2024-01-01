@@ -1,8 +1,17 @@
 import prisma from "./prisma";
 
-const db = prisma.todo;
+const db = prisma.list;
 
-// get todos
+const todoFilter = {
+  select: {
+    id: true,
+    text: true,
+    done: true,
+    ctime: true,
+  },
+};
+
+// get lists
 function list({
   // size,
   // page,
@@ -10,10 +19,13 @@ function list({
   return db.findMany({
     // skip: size * (page - 1),
     // take: size,
+    include: {
+      todo: todoFilter,
+    },
   });
 }
 
-// get Todo by ID
+// get List by ID
 function get({
   id,
 }) {
@@ -21,45 +33,39 @@ function get({
     where: {
       id,
     },
-  });
-}
-
-// create Todo
-function create({
-  listId,
-  text,
-}) {
-  return db.create({
-    data: {
-      text,
-      list: {
-        connect: {
-          id: listId,
-        },
-      },
+    include: {
+      todo: todoFilter,
     },
   });
 }
 
-// udpate todo
+// create List
+function create({
+  name,
+}) {
+  return db.create({
+    data: {
+      name,
+    },
+  });
+}
+
+// update List
 function update({
   id,
-  text,
-  done,
-  // listId,
+  name,
 }) {
   return db.update({
     where: {
       id,
     },
     data: {
-      text,
-      done,
+      name,
     },
   });
 }
 
-// delete todo
+// delete List
 function remove({
   id,
 }) {
