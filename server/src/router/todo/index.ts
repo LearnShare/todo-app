@@ -8,18 +8,26 @@ const todoRouter = Router();
 
 // create todo
 todoRouter.post('/', async (req: Request, res: Response) => {
-  // TODO check is list exists
   const {
     listId,
     text,
   } = req.body;
 
-  const todo = await DB.todo.create({
-    listId: Number(listId),
-    text,
+  const list = await DB.list.get({
+    id: Number(listId),
   });
 
-  res.json(todo);
+  if (!list) {
+    res.status(404)
+        .end('List not exist');
+  } else {
+    const todo = await DB.todo.create({
+      listId: Number(listId),
+      text,
+    });
+
+    res.json(todo);
+  }
 });
 
 // update todo
@@ -56,7 +64,6 @@ todoRouter.put(`/:id`, async (req: Request, res: Response) => {
 
 // delete todo
 todoRouter.delete(`/:id`, async (req: Request, res: Response) => {
-  // TODO check is Todo[id] exists
   const {
     id,
   } = req.params;
