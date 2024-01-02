@@ -1,7 +1,7 @@
-import Todo from './todo';
+import TodoApp from './todo';
 import Icon from './icon';
 
 export {
-  Todo,
+  TodoApp,
   Icon,
 };

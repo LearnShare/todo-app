@@ -4,6 +4,13 @@ interface TodoData {
   done: boolean,
 }
 
+interface TodoListData {
+  id: number,
+  name: string,
+  todo: TodoData[],
+}
+
 export {
   TodoData,
+  TodoListData,
 };

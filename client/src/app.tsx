@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-  Todo,
+  TodoApp,
 } from '@/components';
 
 import '@/css/base.scss';
@@ -9,7 +9,7 @@ import '@/css/base.scss';
 function App() {
   return (
     <div className="app">
-      <Todo />
+      <TodoApp />
     </div>
   );
 }
