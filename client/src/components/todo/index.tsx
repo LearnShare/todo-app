@@ -1,44 +1,15 @@
-import React, {
-  useState,
-  useEffect,
-} from 'react';
+import React from 'react';
 
 import TodoList from './list';
 
-import ListAPI from '@/api/list';
+import useTodo from '@/hooks/todo';
 
 function TodoApp() {
-  // request status
-  const [
-    loading,
-    setLoading,
-  ] = useState(false);
-
-  // lists
-  const [
+  const {
+    // loading,
     lists,
-    setLists,
-  ] = useState([]);
-
-  // get lists
-  const getList = () => {
-    if (loading) {
-      return;
-    }
-
-    setLoading(true);
-
-    ListAPI.list()
-      .then((res) => {
-        setLists(res.data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-  useEffect(() => {
-    getList();
-  }, []);
+    run,
+  } = useTodo();
 
   return (
     <div className="todo-list">
@@ -46,7 +17,8 @@ function TodoApp() {
         lists.map((list) => (
           <TodoList
               key={ list.id }
-              data={ list } />
+              data={ list }
+              run={ (action, target, data) => run(action, target, data) } />
         ))
       }
     </div>

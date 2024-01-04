@@ -1,0 +1,48 @@
+@import '@/css/variables.scss';
+
+.input {
+  position: relative;
+  border: solid 0 transparent;
+  border-width: 1px 0;
+  font-size: 0;
+  &:has(input[type="text"]:focus) {
+    border-color: var(--color-todo-border);
+
+    & > .delete {
+      display: block;
+    }
+  }
+
+  & > input {
+    box-sizing: border-box;
+    border: none;
+    padding: 6px;
+    padding-right: 30px;
+    width: 100%;
+    font-size: 18px;
+    line-height: 1.5;
+    background-color: transparent;
+    color: var(--color-text);
+    &:focus {
+      outline: none;
+    }
+  }
+
+  & > .delete {
+    display: none;
+  }
+  &:hover > .delete {
+    display: block;
+  }
+}
+
+.delete {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  cursor: pointer;
+
+  svg {
+    fill: var(--color-text-second);
+  }
+}

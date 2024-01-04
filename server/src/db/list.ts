@@ -20,7 +20,7 @@ function list({
     // skip: size * (page - 1),
     // take: size,
     include: {
-      todo: todoFilter,
+      todos: todoFilter,
     },
   });
 }
@@ -34,7 +34,7 @@ function get({
       id,
     },
     include: {
-      todo: todoFilter,
+      todos: todoFilter,
     },
   });
 }

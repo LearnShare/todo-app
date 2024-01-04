@@ -43,5 +43,6 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
     'react-hooks/exhaustive-deps': 'off',
     'no-restricted-syntax': 'off',
+    'react/jsx-one-expression-per-line': 'off',
   },
 }

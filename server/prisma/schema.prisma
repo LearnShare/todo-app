@@ -14,7 +14,7 @@ model List {
   id    Int      @id @default(autoincrement())
   name  String
   ctime DateTime @default(now())
-  todo  Todo[]
+  todos  Todo[]
 }
 
 model Todo {

@@ -5,6 +5,7 @@ import React, {
 
 import TodoItem from '../item';
 import TodoInput from '../input';
+import ListInput from './input';
 
 import {
   TodoData,
@@ -15,10 +16,12 @@ import styles from './index.module.scss';
 
 interface TodoListProps {
   data: TodoListData,
+  run: (action, target, data) => void,
 }
 
 function TodoList({
   data,
+  run,
 }: TodoListProps) {
   // todo ids
   const [
@@ -37,7 +40,7 @@ function TodoList({
     const idList = [];
     const todosData = {};
 
-    for (const item of data.todo) {
+    for (const item of data.todos) {
       idList.push(item.id);
       todosData[item.id] = item;
     }
@@ -51,7 +54,7 @@ function TodoList({
     data,
   ]);
 
-  // add todo
+  /* // add todo
   const addTodo = (text: string) => {
     TodoAPI.add(text)
       .then((res) => {
@@ -120,23 +123,45 @@ function TodoList({
           return idData;
         });
       });
-  };
+  }; */
 
   return (
     <div
         className={ styles.list }>
-      <h2>{ data.name }</h2>
       {
-        ids.map((id) => (
-          <TodoItem
-              key={ id }
-              data={ todos[id] }
-              onChange={ (todo) => updateTodo(todo) }
-              onDelete={ () => deleteTodo(id) } />
-        ))
+        data.id && (
+          <>
+            <ListInput
+                id={ data.id }
+                name={ data.name }
+                onChange={ (value) => run('update-list', data.id, {
+                  name: value,
+                }) }
+                onDelete={ () => run('delete-list', data.id) } />
+            {
+              ids.map((id) => (
+                <TodoItem
+                    key={ id }
+                    data={ todos[id] }
+                    onChange={ (todo) => run('update-todo', id, todo) }
+                    onDelete={ () => run('delete-todo', id) } />
+              ))
+            }
+            <TodoInput
+                onSubmit={ (text) => run('add-todo', null, {
+                  text,
+                }) } />
+          </>
+        )
       }
-      <TodoInput
-          onSubmit={ (text) => addTodo(text) } />
+      {
+        !data.id && (
+          <ListInput
+              onChange={ (value) => run('add-list', null, {
+                name: value,
+              }) } />
+        )
+      }
     </div>
   );
 }
