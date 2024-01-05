@@ -4,7 +4,9 @@ function list() {
   return HTTP.get('/list');
 }
 
-function add(name: string) {
+function add({
+  name,
+}) {
   return HTTP.post('/list', {
     name,
   });

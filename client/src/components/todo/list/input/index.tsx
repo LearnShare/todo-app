@@ -49,6 +49,10 @@ function ListInput({
         textInput.current
           .blur();
       }
+
+      if (!id) {
+        setText('');
+      }
     }
   };
 
@@ -65,8 +69,7 @@ function ListInput({
               : 'List name'
           }
           onChange={ (event) => setText(event.target.value) }
-          onKeyDown={ (event) => inputOnKeyDown(event) }
-          onBlur={ (event) => valueOnChange(event.target.value) } />
+          onKeyDown={ (event) => inputOnKeyDown(event) } />
       {
         id && (
           <Icon

@@ -22,6 +22,9 @@ function list({
     include: {
       todos: todoFilter,
     },
+    orderBy: {
+      ctime: 'desc',
+    },
   });
 }
 
@@ -69,6 +72,7 @@ function update({
 function remove({
   id,
 }) {
+  // TODO Foreign key constraint failed on the field: `listId`
   return db.delete({
     where: {
       id,
