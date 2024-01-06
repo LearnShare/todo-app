@@ -22,6 +22,6 @@ model Todo {
   text   String
   done   Boolean  @default(false)
   ctime  DateTime @default(now())
-  list   List     @relation(fields: [listId], references: [id])
+  list   List     @relation(fields: [listId], references: [id], onDelete: Cascade)
   listId Int      @default(0)
 }

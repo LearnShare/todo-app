@@ -72,7 +72,6 @@ function update({
 function remove({
   id,
 }) {
-  // TODO Foreign key constraint failed on the field: `listId`
   return db.delete({
     where: {
       id,
