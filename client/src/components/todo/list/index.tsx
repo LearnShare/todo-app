@@ -54,77 +54,6 @@ function TodoList({
     data,
   ]);
 
-  /* // add todo
-  const addTodo = (text: string) => {
-    TodoAPI.add(text)
-      .then((res) => {
-        const newItem = res.data;
-
-        setIds((oldValue) => ([
-          ...oldValue,
-          newItem.id,
-        ]));
-
-        setData((oldValue) => ({
-          ...oldValue,
-          [newItem.id]: newItem,
-        }));
-      });
-  };
-
-  // update todo
-  const updateTodo = (item: TodoData) => {
-    const {
-      id,
-      text,
-      done,
-    } = item;
-
-    TodoAPI.update(id, {
-      text,
-      done,
-    })
-      .then((res) => {
-        const updatedItem = res.data;
-
-        setData((oldValue) => ({
-          ...oldValue,
-          [id]: updatedItem,
-        }));
-      });
-  };
-
-  // delete todo
-  const deleteTodo = (id: number) => {
-    const index = ids.indexOf(id);
-
-    if (index < 0) {
-      throw new Error(`Item [${ id }] not exists`);
-      return;
-    }
-
-    TodoAPI.del(id)
-      .then(() => {
-        setIds((oldValue) => {
-          const list = [
-            ...oldValue,
-          ];
-          list.splice(index, 1);
-
-          return list;
-        });
-
-        setTodos((oldValue) => {
-          const idData = {
-            ...oldValue,
-          };
-          delete idData[id];
-
-          return idData;
-        });
-      });
-  }; */
-
   return (
     <div
         className={ styles.list }>
@@ -143,12 +72,14 @@ function TodoList({
                 <TodoItem
                     key={ id }
                     data={ todos[id] }
-                    onChange={ (todo) => run('update-todo', id, todo) }
-                    onDelete={ () => run('delete-todo', id) } />
+                    onChange={ (todo) => run('update-todo', data.id, todo) }
+                    onDelete={ () => run('delete-todo', data.id, {
+                      id,
+                    }) } />
               ))
             }
             <TodoInput
-                onSubmit={ (text) => run('add-todo', null, {
+                onSubmit={ (text) => run('add-todo', data.id, {
                   text,
                 }) } />
           </>

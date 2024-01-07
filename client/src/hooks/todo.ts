@@ -4,6 +4,7 @@ import {
 } from 'react';
 
 import ListAPI from '@/api/list';
+import TodoAPI from '@/api/todo';
 
 const emptyList = {
   id: null,
@@ -14,7 +15,7 @@ const emptyList = {
 function parseLists(lists) {
   const lIds = [];
   const lData = {};
-  const tIds = [];
+  // const tIds = [];
   const tData = {};
 
   for (const list of lists) {
@@ -40,9 +41,9 @@ function parseLists(lists) {
         done,
       };
 
-      tIds.push(tId);
+      // tIds.push(tId);
       tData[tId] = todoItem;
-      todoList.push(todoItem);
+      todoList.push(tId);
     }
 
     lData[id] = {
@@ -55,7 +56,7 @@ function parseLists(lists) {
   return {
     lIds,
     lData,
-    tIds,
+    // tIds,
     tData,
   };
 }
@@ -77,16 +78,16 @@ function useTodo() {
     setListData,
   ] = useState({});
 
-  // // todo id
+  // todo id
   // const [
   //   todoIds,
   //   setTodoIds,
   // ] = useState([]);
-  // // todo data
-  // const [
-  //   todoData,
-  //   setTodoData,
-  // ] = useState({});
+  // todo data
+  const [
+    todoData,
+    setTodoData,
+  ] = useState({});
 
   // get lists
   const getList = () => {
@@ -102,13 +103,13 @@ function useTodo() {
           lIds,
           lData,
           // tIds,
-          // tData,
+          tData,
         } = parseLists(res.data);
 
         setListIds(lIds);
         setListData(lData);
         // setTodoIds(tIds);
-        // setTodoData(tData);
+        setTodoData(tData);
       })
       .finally(() => {
         setLoading(false);
@@ -117,20 +118,6 @@ function useTodo() {
   useEffect(() => {
     getList();
   }, []);
-
-  const lists = listIds.map((listId) => {
-    const {
-      id,
-      name,
-      todos,
-    } = listData[listId];
-
-    return {
-      id,
-      name,
-      todos,
-    };
-  });
 
   const addList = ({
     name,
@@ -207,15 +194,99 @@ function useTodo() {
       });
   };
 
-  // TODO update by action
-  // 2. update list
-  // 3. delete list
-  // 4. add todo
-  // 5. update todo
-  // 6. delete todo
-  const run = (action, target, data) => {
-    console.log(action, target, data);
+  const addTodo = (listId, data) => {
+    TodoAPI.add({
+      listId,
+      text: data.text,
+    })
+      .then((res) => {
+        const {
+          id,
+          text,
+          done,
+        } = res.data;
 
+        setListData((oldData) => {
+          const newData = {
+            ...oldData,
+          };
+          newData[listId].todos
+            .push(id);
+
+          return newData;
+        });
+
+        // setTodoIds((oldIds) => [
+        //   ...oldIds,
+        //   id,
+        // ]);
+
+        setTodoData((oldData) => ({
+          ...oldData,
+          [id]: {
+            id,
+            text,
+            done,
+          },
+        }));
+      });
+  };
+
+  const updateTodo = (listId, data) => {
+    const {
+      id,
+      text,
+      done,
+    } = data;
+
+    TodoAPI.update(id, {
+      text,
+      done,
+    })
+      .then(() => {
+        setTodoData((oldData) => ({
+          ...oldData,
+          [id]: {
+            id,
+            text,
+            done,
+          },
+        }));
+      });
+  };
+
+  const deleteTodo = (listId, data) => {
+    const {
+      id,
+    } = data;
+
+    TodoAPI.del(id)
+      .then(() => {
+        setListData((oldData) => {
+          const newData = {
+            ...oldData,
+          };
+
+          const index = newData[listId].todos
+            .indexOf(id);
+          newData[listId].todos
+            .splice(index, 1);
+
+          return newData;
+        });
+
+        setTodoData((oldData) => {
+          const newData = {
+            ...oldData,
+          };
+          delete newData[id];
+
+          return newData;
+        });
+      });
+  };
+
+  const run = (action, target, data) => {
     switch (action) {
       case 'add-list':
         addList(data);
@@ -226,9 +297,32 @@ function useTodo() {
       case 'delete-list':
         deleteList(target);
         break;
+      case 'add-todo':
+        addTodo(target, data);
+        break;
+      case 'update-todo':
+        updateTodo(target, data);
+        break;
+      case 'delete-todo':
+        deleteTodo(target, data);
+        break;
       default:
     }
   };
+
+  const lists = listIds.map((listId) => {
+    const {
+      id,
+      name,
+      todos,
+    } = listData[listId];
+
+    return {
+      id,
+      name,
+      todos: todos.map((todoId) => todoData[todoId]),
+    };
+  });
 
   return {
     loading,

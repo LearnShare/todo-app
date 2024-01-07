@@ -4,8 +4,12 @@ function list() {
   return HTTP.get('/todo');
 }
 
-function add(text: string) {
+function add({
+  listId,
+  text,
+}) {
   return HTTP.post('/todo', {
+    listId,
     text,
   });
 }
