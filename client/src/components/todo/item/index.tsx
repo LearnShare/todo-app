@@ -61,10 +61,6 @@ function TodoItem(
   const inputOnKeyDown = (event: KeyboardEvent) => {
     // submit on Enter
     if (event.key === 'Enter') {
-      todoOnChange({
-        text: event.target.value,
-      });
-
       if (textInput
           && textInput.current) {
         textInput.current

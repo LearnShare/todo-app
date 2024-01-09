@@ -4,6 +4,8 @@ import TodoList from './list';
 
 import useTodo from '@/hooks/todo';
 
+import styles from './index.module.scss';
+
 function TodoApp() {
   const {
     // loading,
@@ -12,7 +14,8 @@ function TodoApp() {
   } = useTodo();
 
   return (
-    <div className="todo-list">
+    <div
+        className={ styles.todo }>
       {
         lists.map((list) => (
           <TodoList
