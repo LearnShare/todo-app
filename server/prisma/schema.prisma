@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,18 +7,87 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// User status
+// inactive - created, but no activate
+// active   - activate by email(URL token) or sms(code)
+// disabled - can't do anything
+
+// user
+model User {
+  id       Int      @id @default(autoincrement())
+  username String
+  password String
+  status   String // User status
+  ctime    DateTime @default(now())
+
+  profile    Profile?
+  preference Preference?
+  list       List[]
+}
+
+// user.profile
+model Profile {
+  id     Int    @id @default(autoincrement())
+  email  String
+  name   String
+  avatar Int? // File.id
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+}
+
+// user.preference
+model Preference {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @unique
+}
+
+// file
+model File {
+  id           Int      @id @default(autoincrement())
+  type         String? // file type
+  user         Int? // user.id
+  path         String // store path
+  name         String // name.ext
+  size         Int // file.size in bite
+  mimeType     String // mime type
+  hash         String // multer.filename
+  originalName String // original name from user side
+  ctime        DateTime @default(now())
+}
+
+// token
+// type:
+// reg - account activation
+model Token {
+  id    Int       @id @default(autoincrement())
+  token String
+  type  String
+  ref   Int?
+  ctime DateTime  @default(now())
+  etime DateTime?
+}
+
+// todo list
 model List {
   id    Int      @id @default(autoincrement())
   name  String
   ctime DateTime @default(now())
+
   todos  Todo[]
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 }
 
+// todo
 model Todo {
-  id     Int      @id @default(autoincrement())
-  text   String
-  done   Boolean  @default(false)
-  ctime  DateTime @default(now())
-  list   List     @relation(fields: [listId], references: [id], onDelete: Cascade)
-  listId Int      @default(0)
+  id    Int      @id @default(autoincrement())
+  text  String
+  done  Boolean  @default(false)
+  ctime DateTime @default(now())
+
+  list   List @relation(fields: [listId], references: [id], onDelete: Cascade)
+  listId Int
 }
