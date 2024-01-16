@@ -27,6 +27,28 @@ function get({
   });
 }
 
+// search User
+function search(query) {
+  return db.findMany({
+    where: query,
+  });
+}
+
+// create User
+function create({
+  username,
+  password,
+  status,
+}) {
+  return db.create({
+    data: {
+      username,
+      password,
+      status,
+    },
+  });
+}
+
 // update User
 function update({
   id,
@@ -49,5 +71,7 @@ function update({
 export default {
   list,
   get,
+  search,
+  create,
   update,
 };

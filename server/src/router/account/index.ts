@@ -5,6 +5,10 @@ import {
 } from 'express';
 
 import DB from '@/db';
+import Validator from '@/lib/validator';
+import Crypto from '@/lib/crypto';
+import Email from '@/lib/email';
+import Config from '@/config';
 
 const accountRouter = Router();
 
@@ -37,16 +41,44 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
     password,
   } = req.body;
 
-  // TODO
-  // 1. check username
-  // 2. send active token/code
+  if (!Validator.isEmail(username)) {
+    res.status(400)
+      .end('Invalid email');
+    return;
+  }
+
+  // 2. check is exists
+  const exist = await DB.user.search({
+    username,
+  });
+  if (exist.length) {
+    res.status(400)
+      .end('Account already exists');
+    return;
+  }
+
+  // 3. create user
   const account = await DB.user.create({
     username,
     password,
     status: 'inactive',
   });
+  console.log(account);
 
-  res.end();
+  // 4. send active code
+  const code = Crypto.generateRandomNumber(6);
+  console.log(code);
+  const token = await DB.token.create({
+    token: code,
+    type: 'account-active',
+    ref: account.id,
+    ctime: new Date(),
+    etime: new Date(Date.now() + Config.accountActiveTokenETime),
+  });
+  console.log(token);
+  await Email.send(username, code, 'account-active');
+
+  res.json(account);
 });
 
 // verify
