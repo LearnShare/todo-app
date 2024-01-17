@@ -58,16 +58,15 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
   }
 
   // 3. create user
+  const hash = await Crypto.hashPassword(password);
   const account = await DB.user.create({
     username,
-    password,
+    password: hash,
     status: 'inactive',
   });
-  console.log(account);
 
   // 4. send active code
   const code = Crypto.generateRandomNumber(6);
-  console.log(code);
   const token = await DB.token.create({
     token: code,
     type: 'account-active',
@@ -75,7 +74,6 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
     ctime: new Date(),
     etime: new Date(Date.now() + Config.accountActiveTokenETime),
   });
-  console.log(token);
   await Email.send(username, code, 'account-active');
 
   res.json(account);

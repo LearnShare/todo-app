@@ -2,7 +2,11 @@ import Dotenv from 'dotenv';
 import NodeMailer from 'nodemailer';
 
 Dotenv.config({
+  path: '.env',
+});
+Dotenv.config({
   path: '.env.local',
+  override: true,
 });
 
 const mailer = NodeMailer.createTransport({
@@ -40,7 +44,8 @@ async function send(to, content, type) {
 
   const result = await mailer.sendMail(mail);
 
-  console.log(result);
+  // console.log(result);
+  // TODO log email records
 }
 
 export default {

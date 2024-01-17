@@ -4,6 +4,8 @@ import express, {
   Response,
 } from 'express';
 
+// FIXME .env.local not loaded
+
 import router from '@/router';
 
 const app: Express = express();

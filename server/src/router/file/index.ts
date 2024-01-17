@@ -18,8 +18,6 @@ fileRouter.post(
   '/',
   upload.single('avatar'),
   async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log(req.file);
     const {
       fieldname,
       originalname,
