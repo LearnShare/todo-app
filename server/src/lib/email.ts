@@ -21,17 +21,17 @@ const mailer = NodeMailer.createTransport({
   tls: {
     rejectUnAuthorized: true,
   },
-  logger: true,
-  debug: true,
+  // logger: true,
+  // debug: true,
 });
 
-mailer.verify((error) => {
-  if (error) {
-    console.log(error);
-  } else {
-    console.log('mailer works');
-  }
-});
+// mailer.verify((error) => {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log('mailer works');
+//   }
+// });
 
 async function send(to, content, type) {
   const mail = {

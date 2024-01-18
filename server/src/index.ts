@@ -1,10 +1,11 @@
+import Dotenv from 'dotenv';
 import express, {
   Express,
   Request,
   Response,
 } from 'express';
 
-// FIXME .env.local not loaded
+Dotenv.config();
 
 import router from '@/router';
 

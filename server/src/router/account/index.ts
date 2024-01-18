@@ -8,6 +8,7 @@ import DB from '@/db';
 import Validator from '@/lib/validator';
 import Crypto from '@/lib/crypto';
 import Email from '@/lib/email';
+import Auth from '@/lib/auth';
 import Config from '@/config';
 
 const accountRouter = Router();
@@ -19,15 +20,49 @@ accountRouter.post('/sign-in', async (req: Request, res: Response) => {
     password,
   } = req.body;
 
-  // TODO
-  // 1. check username and password
-  // 2. return account info
+  if (!username
+      || !password) {
+    res.status(400)
+      .end('username and password required.');
+    return;
+  }
 
-  res.end();
+  const users = await DB.user.search({
+    username,
+  });
+  if (!users.length) {
+    res.status(400)
+      .end('invalid username or password.');
+    return;
+  }
+
+  const {
+    id,
+    password: hash,
+    status,
+  } = users[0];
+
+  const match = await Crypto.checkPassword(password, hash);
+  if (!match) {
+    res.status(400)
+      .end('invalid username or password.');
+      return;
+  }
+
+  const token = await Auth.encrypt({
+    id,
+    status,
+  });
+
+  res.json({
+    id,
+    status,
+    token,
+  });
 });
 
 // get Account info
-accountRouter.get('/info', async (req: Request, res: Response) => {
+accountRouter.get('/info', Auth.check, async (req: Request, res: Response) => {
   // TODO
   // 1. return account info
 
@@ -80,7 +115,7 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
 });
 
 // verify
-accountRouter.post('/verify', async (req: Request, res: Response) => {
+accountRouter.post('/verify', Auth.check, async (req: Request, res: Response) => {
   const {
     type, // sign-in | password
   } = req.body;
@@ -92,7 +127,7 @@ accountRouter.post('/verify', async (req: Request, res: Response) => {
 });
 
 // active Account
-accountRouter.post('/active', async (req: Request, res: Response) => {
+accountRouter.post('/active', Auth.check, async (req: Request, res: Response) => {
   const {
     code,
   } = req.body;

@@ -4,6 +4,8 @@ import {
   Response,
 } from 'express';
 
+import Auth from '@/lib/auth';
+
 import accountRouter from './account';
 import listRouter from './list';
 import todoRouter from './todo';
@@ -13,9 +15,9 @@ const router = Router();
 
 // TODO JWT token
 router.use('/api/account', accountRouter);
-router.use('/api/list', listRouter);
-router.use('/api/todo', todoRouter);
-router.use('/api/file', fileRouter);
+router.use('/api/list', Auth.check, listRouter);
+router.use('/api/todo', Auth.check, todoRouter);
+router.use('/api/file', Auth.check, fileRouter);
 
 router.all('*', (req: Request, res: Response) => {
   res.status(404)
