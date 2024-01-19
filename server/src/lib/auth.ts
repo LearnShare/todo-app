@@ -30,9 +30,8 @@ function check(
     return;
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (error, data) => {
+  JWT.verify(token, process.env.JWT_SECRET, (error, data) => {
     if (error) {
-      console.log(error);
       res.status(403)
         .end('invalid token');
     } else {
