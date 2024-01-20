@@ -4,7 +4,7 @@ const db = prisma.token;
 
 // search single Token
 function get(query) {
-  return db.findUnique({
+  return db.findMany({
     where: query,
   });
 }
@@ -26,7 +26,18 @@ function create({
   });
 }
 
+// update token
+function update(id, data) {
+  return db.update({
+    where: {
+      id,
+    },
+    data,
+  });
+}
+
 export default {
   get,
   create,
+  update,
 };

@@ -51,7 +51,6 @@ accountRouter.post('/sign-in', async (req: Request, res: Response) => {
 
   const token = await Auth.encrypt({
     id,
-    status,
   });
 
   res.json({
@@ -111,10 +110,11 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
   });
   await Email.send(username, code, 'account-active');
 
+  // TODO return account info
   res.json(account);
 });
 
-// verify
+// send verify token/code
 accountRouter.post('/verify', Auth.check, async (req: Request, res: Response) => {
   const {
     type, // sign-in | password
@@ -131,12 +131,44 @@ accountRouter.post('/active', Auth.check, async (req: Request, res: Response) =>
   const {
     code,
   } = req.body;
+  const {
+    id,
+  } = req.user;
 
-  // TODO
-  // 1. check token and code
-  // 2. update user.status
+  const tokens = await DB.token.get({
+    ref: id,
+    type: 'account-active',
+  });
+  if (!tokens) { // no matched token
+    res.status(400)
+      .end('invalid activation code');
+    return;
+  }
 
-  res.end();
+  const {
+    id: tokenId,
+    token,
+    etime,
+  } = tokens[0];
+  if (Date.now() > new Date(etime).getTime()
+      || code !== token) { // token expired
+    res.status(400)
+      .end('invalid activation code');
+    return;
+  }
+
+  await DB.token.update(tokenId, {
+    used: true,
+  });
+  await DB.user.update(id, {
+    status: 'active',
+  });
+
+  // TODO return account info
+  res.json({
+    id,
+    status: 'active',
+  });
 });
 
 // update Account

@@ -27,7 +27,7 @@ function get({
   });
 }
 
-// search User
+// search Users
 function search(query) {
   return db.findMany({
     where: query,
@@ -50,21 +50,12 @@ function create({
 }
 
 // update User
-function update({
-  id,
-  password,
-  status,
-  // profile,
-  // preference,
-}) {
+function update(id, data) {
   return db.update({
     where: {
       id,
     },
-    data: {
-      password,
-      status,
-    },
+    data,
   });
 }
 

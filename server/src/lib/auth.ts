@@ -34,11 +34,12 @@ function check(
     if (error) {
       res.status(403)
         .end('invalid token');
-    } else {
-      req.user = data;
-
-      next();
+      return;
     }
+
+    req.user = data;
+
+    next();
   });
 }
 

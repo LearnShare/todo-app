@@ -60,12 +60,13 @@ model File {
 
 // token
 // type:
-// reg - account activation
+// account-active: account activation
 model Token {
   id    Int       @id @default(autoincrement())
   token String
   type  String
   ref   Int?
+  used  Boolean @default(false)
   ctime DateTime  @default(now())
   etime DateTime?
 }
