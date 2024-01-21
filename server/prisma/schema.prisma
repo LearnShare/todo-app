@@ -8,9 +8,9 @@ datasource db {
 }
 
 // User status
-// inactive - created, but no activate
-// active   - activate by email(URL token) or sms(code)
-// disabled - can't do anything
+// - inactive: created, but no activate
+// - active: activate by email(URL token) or sms(code)
+// - disabled: can't do anything
 
 // user
 model User {
@@ -22,7 +22,6 @@ model User {
 
   profile    Profile?
   preference Preference?
-  list       List[]
 }
 
 // user.profile
@@ -65,8 +64,8 @@ model Token {
   id    Int       @id @default(autoincrement())
   token String
   type  String
-  ref   Int?
-  used  Boolean @default(false)
+  ref   Int? // User.id | *
+  used  Boolean   @default(false)
   ctime DateTime  @default(now())
   etime DateTime?
 }
@@ -75,11 +74,8 @@ model Token {
 model List {
   id    Int      @id @default(autoincrement())
   name  String
+  user  Int // User.id
   ctime DateTime @default(now())
-
-  todos  Todo[]
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId Int
 }
 
 // todo
@@ -87,8 +83,7 @@ model Todo {
   id    Int      @id @default(autoincrement())
   text  String
   done  Boolean  @default(false)
+  user  Int // User.id
+  list  Int // List.id
   ctime DateTime @default(now())
-
-  list   List @relation(fields: [listId], references: [id], onDelete: Cascade)
-  listId Int
 }

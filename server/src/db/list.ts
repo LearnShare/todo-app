@@ -12,16 +12,15 @@ const todoFilter = {
 };
 
 // get lists
-function list({
-  // size,
-  // page,
-}) {
+function list(
+  size = 10,
+  page = 1,
+  query,
+) {
   return db.findMany({
-    // skip: size * (page - 1),
-    // take: size,
-    include: {
-      todos: todoFilter,
-    },
+    skip: size * (page - 1),
+    take: size,
+    where: query,
     orderBy: {
       ctime: 'desc',
     },
@@ -36,19 +35,18 @@ function get({
     where: {
       id,
     },
-    include: {
-      todos: todoFilter,
-    },
   });
 }
 
 // create List
 function create({
   name,
+  user,
 }) {
   return db.create({
     data: {
       name,
+      user,
     },
   });
 }

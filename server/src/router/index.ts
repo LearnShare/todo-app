@@ -21,7 +21,7 @@ router.use('/api/file', Auth.check, fileRouter);
 
 router.all('*', (req: Request, res: Response) => {
   res.status(404)
-    .send(`${ req.path } - not found.`);
+    .send(`${ req.path } not found.`);
 });
 
 export default router;

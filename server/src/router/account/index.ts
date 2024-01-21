@@ -63,7 +63,6 @@ accountRouter.post('/sign-in', async (req: Request, res: Response) => {
 
 // get Account info
 accountRouter.get('/info', Auth.check, async (req: Request, res: Response) => {
-  console.log(req.user);
   const {
     id,
   } = req.user;
@@ -206,8 +205,8 @@ accountRouter.post('/active', Auth.check, async (req: Request, res: Response) =>
 });
 
 // update Account
-// password
-// profile
-// preference
+// - password
+// - profile
+// - preference
 
 export default accountRouter;
