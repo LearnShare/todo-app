@@ -55,6 +55,7 @@ accountRouter.post('/sign-in', async (req: Request, res: Response) => {
 
   res.json({
     id,
+    username,
     status,
     token,
   });
@@ -62,10 +63,24 @@ accountRouter.post('/sign-in', async (req: Request, res: Response) => {
 
 // get Account info
 accountRouter.get('/info', Auth.check, async (req: Request, res: Response) => {
-  // TODO
-  // 1. return account info
+  console.log(req.user);
+  const {
+    id,
+  } = req.user;
 
-  res.end();
+  const user = await DB.user.get({
+    id,
+  });
+  const {
+    username,
+    status,
+  } = user;
+
+  res.json({
+    id,
+    username,
+    status,
+  });
 });
 
 // create Account
@@ -93,7 +108,7 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
 
   // 3. create user
   const hash = await Crypto.hashPassword(password);
-  const account = await DB.user.create({
+  const user = await DB.user.create({
     username,
     password: hash,
     status: 'inactive',
@@ -104,14 +119,22 @@ accountRouter.post('/sign-up', async (req: Request, res: Response) => {
   const token = await DB.token.create({
     token: code,
     type: 'account-active',
-    ref: account.id,
+    ref: user.id,
     ctime: new Date(),
     etime: new Date(Date.now() + Config.accountActiveTokenETime),
   });
   await Email.send(username, code, 'account-active');
 
-  // TODO return account info
-  res.json(account);
+  const {
+    id,
+    status,
+  } = user;
+
+  res.json({
+    id,
+    username,
+    status,
+  });
 });
 
 // send verify token/code
@@ -148,10 +171,16 @@ accountRouter.post('/active', Auth.check, async (req: Request, res: Response) =>
   const {
     id: tokenId,
     token,
+    used,
     etime,
   } = tokens[0];
-  if (Date.now() > new Date(etime).getTime()
-      || code !== token) { // token expired
+  if (used) { // token used
+    res.status(200)
+      .end('account already activated');
+    return;
+  }
+  if (Date.now() > new Date(etime).getTime() // token expired
+      || code !== token) { // token not match
     res.status(400)
       .end('invalid activation code');
     return;
@@ -160,14 +189,19 @@ accountRouter.post('/active', Auth.check, async (req: Request, res: Response) =>
   await DB.token.update(tokenId, {
     used: true,
   });
-  await DB.user.update(id, {
+  const user = await DB.user.update(id, {
     status: 'active',
   });
 
-  // TODO return account info
+  const {
+    username,
+    status,
+  } = user;
+
   res.json({
     id,
-    status: 'active',
+    username,
+    status,
   });
 });
 
