@@ -2,14 +2,19 @@ import prisma from "./prisma";
 
 const db = prisma.todo;
 
-// get todos
-function list({
-  // size,
-  // page,
-}) {
+// search Todos
+function search(
+  // size = 10,
+  // page = 1,
+  query,
+) {
   return db.findMany({
     // skip: size * (page - 1),
     // take: size,
+    where: query,
+    orderBy: {
+      ctime: 'desc',
+    },
   });
 }
 
@@ -26,36 +31,28 @@ function get({
 
 // create Todo
 function create({
-  listId,
+  list,
+  user,
   text,
+  done,
 }) {
   return db.create({
     data: {
+      list,
+      user,
       text,
-      list: {
-        connect: {
-          id: listId,
-        },
-      },
+      done,
     },
   });
 }
 
 // udpate todo
-function update({
-  id,
-  text,
-  done,
-  // listId,
-}) {
+function update(id, data) {
   return db.update({
     where: {
       id,
     },
-    data: {
-      text,
-      done,
-    },
+    data,
   });
 }
 
@@ -71,7 +68,7 @@ function remove({
 }
 
 export default {
-  list,
+  search,
   get,
   create,
   update,

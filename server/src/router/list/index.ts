@@ -18,7 +18,7 @@ listRouter.get('/', async (req: Request, res: Response) => {
     id: userId,
   } = req.user;
 
-  const list = await DB.list.list(
+  const list = await DB.list.search(
     Number(size),
     Number(page),
     {
@@ -48,9 +48,14 @@ listRouter.get(`/:id`, async (req: Request, res: Response) => {
     return;
   } else if (list.user !== Number(userId)) {
     res.status(403)
-      .end('Not visible');
+      .end('Not available');
     return;
   }
+
+  const todos = await DB.todo.search({
+    list: Number(id),
+  });
+  list.todos = todos;
 
   res.json(list);
 });

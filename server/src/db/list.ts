@@ -11,8 +11,8 @@ const todoFilter = {
   },
 };
 
-// get lists
-function list(
+// search Lists
+function search(
   size = 10,
   page = 1,
   query,
@@ -78,7 +78,7 @@ function remove({
 }
 
 export default {
-  list,
+  search,
   get,
   create,
   update,
