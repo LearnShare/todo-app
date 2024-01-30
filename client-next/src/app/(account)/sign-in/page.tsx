@@ -14,7 +14,7 @@ function PageSignIn() {
     <div className="page-sign-in">
       <Flex
           direction="column"
-          gap="3">
+          gap="4">
         <Heading
             as="h1"
             weight="medium"
@@ -28,17 +28,20 @@ function PageSignIn() {
         </Flex>
         <Box>
           <TextFieldInput
+              size="3"
               placeholder="Email" />
         </Box>
         <Box>
           <TextFieldInput
+              size="3"
               placeholder="Password"
               type="password" />
         </Box>
         <Flex
             justify="end"
             mt="4">
-          <Button>Continue</Button>
+          <Button
+              size="3">Continue</Button>
         </Flex>
       </Flex>
     </div>

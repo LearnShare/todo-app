@@ -14,7 +14,7 @@ function PageSignUp() {
     <div className="page-sign-up">
       <Flex
           direction="column"
-          gap="3">
+          gap="4">
         <Heading
             as="h1"
             weight="medium"
@@ -28,22 +28,26 @@ function PageSignUp() {
         </Flex>
         <Box>
           <TextFieldInput
+              size="3"
               placeholder="Email" />
         </Box>
         <Box>
           <TextFieldInput
+              size="3"
               placeholder="Password"
               type="password" />
         </Box>
         <Box>
           <TextFieldInput
+              size="3"
               placeholder="Re-enter Password"
               type="password" />
         </Box>
         <Flex
             justify="end"
             mt="4">
-          <Button>Create account</Button>
+          <Button
+              size="3">Create account</Button>
         </Flex>
       </Flex>
     </div>

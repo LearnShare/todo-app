@@ -7,7 +7,7 @@ import {
   Theme,
 } from '@radix-ui/themes';
 
-import './layout.scss';
+import './global.scss';
 import '@radix-ui/themes/styles.css';
 
 export const metadata: Metadata = {
