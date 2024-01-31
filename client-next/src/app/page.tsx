@@ -1,12 +1,15 @@
 import React from 'react';
 
 import {
+  TodoLayout,
   TodoApp,
 } from '@/components';
 
 function PageHome() {
   return (
-    <TodoApp />
+    <TodoLayout>
+      <TodoApp />
+    </TodoLayout>
   );
 }
 

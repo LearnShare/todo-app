@@ -4,13 +4,14 @@
   align-items: center;
   padding: var(--space-2) var(--space-3);
   border-radius: max(var(--radius-3), var(--radius-full));
-  box-shadow: inset 0 0 0 1px var(--gray-a7);
+  box-shadow: inset 0 0 0 1px var(--gray-a3);
   text-decoration: none;
   color: var(--gray-12);
   &:hover {
     box-shadow: inset 0 0 0 1px var(--color-focus-root);
 
     .icon {
+      opacity: 1;
       translate: 4px;
       color: var(--color-focus-root);
     }
@@ -22,6 +23,7 @@
 }
 
 .icon {
+  opacity: 0;
   padding: 0 4px;
   transition: all .2s;
 }
